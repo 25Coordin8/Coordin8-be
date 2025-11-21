@@ -7,13 +7,8 @@ spring:
   application:
     name: coordin8
 
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/coordin8?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: 7160
-    hikari:
-      connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+  profiles:
+    include: secret
 
   server:
     servlet:
@@ -44,6 +39,22 @@ spring:
       mode: embedded
       continue-on-error: true
       encoding: UTF-8
+
+  # 정적 리소스 설정 (이미지 파일 서빙)
+  web:
+    resources:
+      static-locations: file:${app.upload.dir:uploads/},classpath:/static/
+      add-mappings: true
+
+# 애플리케이션 커스텀 설정
+app:
+  upload:
+    # 환경 변수 APP_UPLOAD_DIR이 있으면 사용, 없으면 기본값 uploads/ 사용
+    # 로컬: uploads/ (기본값)
+    # EC2 배포: 환경 변수로 /var/www/coordin8/uploads/ 설정 권장
+    dir: ${APP_UPLOAD_DIR:uploads/}  # 이미지 파일 저장 디렉토리
+    max-file-size: 10MB  # 최대 파일 크기
+    allowed-types: image/jpeg,image/png,image/gif,image/webp  # 허용된 이미지 타입
 
 # SpringDoc / Swagger UI 설정
 springdoc:

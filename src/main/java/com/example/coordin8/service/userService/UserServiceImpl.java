@@ -27,8 +27,7 @@ public class UserServiceImpl implements UserService {
 
         AvatarEntity avatar = null;
         if (dto.getAvatarId() != null) {
-            // Long → Integer 변환 후 Entity 검색
-            avatar = avatarRepository.findById(dto.getAvatarId().intValue())
+            avatar = avatarRepository.findById(dto.getAvatarId())
                     .orElseThrow(() -> new RuntimeException("Avatar not found"));
         }
 
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setBio(dto.getBio());
 
         if (dto.getAvatarId() != null) {
-            AvatarEntity avatar = avatarRepository.findById(dto.getAvatarId().intValue())
+            AvatarEntity avatar = avatarRepository.findById(dto.getAvatarId())
                     .orElseThrow(() -> new RuntimeException("Avatar not found"));
             user.setAvatar(avatar);
         }

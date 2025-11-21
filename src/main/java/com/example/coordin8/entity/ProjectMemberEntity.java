@@ -15,17 +15,17 @@ import lombok.NoArgsConstructor;
 public class ProjectMemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 추가 권장
+    @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false) // ⬅️ nullable = false 추가
     private ProjectEntity project;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 추가 권장
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) // ⬅️ nullable = false 추가
     private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 추가 권장
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false) // ⬅️ nullable = false 추가
     private RoleEntity role;
 }

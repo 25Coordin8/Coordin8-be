@@ -35,3 +35,78 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 민감한 정보 및 설정 파일 ###
+# 데이터베이스 비밀번호 등 민감한 정보가 포함된 설정 파일
+**/application-secret.yml
+**/application-secret.properties
+**/application-local.yml
+**/application-local.properties
+*.secret
+*.key
+*.pem
+*.p12
+*.jks
+
+### 환경 변수 파일 ###
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+### 로그 파일 ###
+*.log
+logs/
+*.log.*
+
+### 운영체제 관련 파일 ###
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+### 임시 파일 ###
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.cache/
+
+### 빌드 산출물 ###
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+*.class
+*.classpath
+
+### 테스트 결과 ###
+test-results/
+reports/
+*.html
+*.xml
+
+### 업로드된 파일 ###
+uploads/
+!uploads/.gitkeep
+
+### 기타 ###
+*.bak
+*.backup
+*.orig
