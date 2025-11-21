@@ -12,6 +12,8 @@ public class UserResponseDto {
     private String userMajor;
     private String bio;
     private Long avatarId;
+    private int projectCount;
+    private int cardCount;
 
     public UserResponseDto(UserEntity userEntity) {
         this.id = userEntity.getId();
@@ -19,5 +21,7 @@ public class UserResponseDto {
         this.userMajor = userEntity.getUserMajor();
         this.bio = userEntity.getBio();
         this.avatarId = userEntity.getAvatar() != null ? userEntity.getAvatar().getId() : null;
+        this.projectCount = userEntity.getProjectCount();
+        this.cardCount = userEntity.getCardCount();
     }
 }

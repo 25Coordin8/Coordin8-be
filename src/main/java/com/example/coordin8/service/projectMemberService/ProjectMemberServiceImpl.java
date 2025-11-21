@@ -47,7 +47,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         projectMember.setUser(user);
         projectMember.setRole(role);
 
-        return projectMemberRepository.save(projectMember);
+        ProjectMemberEntity saved = projectMemberRepository.save(projectMember);
+
+        // ⭐ User의 project_count +1
+        int oldCount = user.getProjectCount() == null ? 0 : user.getProjectCount();
+        user.setProjectCount(oldCount + 1);
+        userRepository.save(user);
+
+        return saved;
     }
 
     // ---------------------- READ ALL ----------------------
@@ -92,6 +99,17 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     // ---------------------- DELETE ----------------------
     @Override
     public void deleteProjectMember(Long id) {
+        ProjectMemberEntity member = projectMemberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ProjectMember not found"));
+
+        UserEntity user = member.getUser();
+
+        // ⭐ 삭제 시 project_count -1
+        if (user != null && user.getProjectCount() != null && user.getProjectCount() > 0) {
+            user.setProjectCount(user.getProjectCount() - 1);
+            userRepository.save(user);
+        }
+
         projectMemberRepository.deleteById(id);
     }
 }

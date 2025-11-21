@@ -22,6 +22,12 @@ public class UserEntity {
             columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String bio;
 
+    @Column(name = "project_count")
+    private Integer projectCount = 0;  // 기본값 0
+
+    @Column(name = "card_count")
+    private Integer cardCount = 0;     // 기본값 0
+
     @ManyToOne
     @JoinColumn(name = "avatar_id")   // FK 컬럼명
     private AvatarEntity avatar;
@@ -34,6 +40,8 @@ public class UserEntity {
         this.userName = userName;
         this.userMajor = userMajor;
         this.bio = bio;
+        this.projectCount = 0;
+        this.cardCount = 0;
     }
 
     // Getter & Setter
@@ -76,4 +84,21 @@ public class UserEntity {
     public void setAvatar(AvatarEntity avatar) {
         this.avatar = avatar;
     }
+
+    public Integer getProjectCount() {
+        return projectCount;
+    }
+
+    public void setProjectCount(Integer projectCount) {
+        this.projectCount = projectCount;
+    }
+
+    public Integer getCardCount() {
+        return cardCount;
+    }
+
+    public void setCardCount(Integer cardCount) {
+        this.cardCount = cardCount;
+    }
 }
+

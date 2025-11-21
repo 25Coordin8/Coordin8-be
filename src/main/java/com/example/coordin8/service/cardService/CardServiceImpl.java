@@ -27,18 +27,22 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardEntity createCard(CardRequestDto dto) {
+
+        // Project 가져오기
         ProjectEntity project = null;
         if (dto.getProjectId() != null) {
             project = projectRepository.findById(dto.getProjectId())
                     .orElseThrow(() -> new RuntimeException("Project not found"));
         }
 
+        // User 가져오기
         UserEntity user = null;
         if (dto.getUserId() != null) {
             user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
 
+        // Card 생성
         CardEntity card = CardEntity.builder()
                 .cardTitle(dto.getCardTitle())
                 .cardContent(dto.getCardContent())
@@ -47,7 +51,17 @@ public class CardServiceImpl implements CardService {
                 .user(user)
                 .build();
 
-        return cardRepository.save(card);
+        // 카드 저장
+        CardEntity savedCard = cardRepository.save(card);
+
+        // ⭐ 카드 개수 +1 증가
+        if (user != null) {
+            Integer oldCount = user.getCardCount() == null ? 0 : user.getCardCount();
+            user.setCardCount(oldCount + 1);
+            userRepository.save(user);
+        }
+
+        return savedCard;
     }
 
     @Override
@@ -86,6 +100,18 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void deleteCard(Long cardId) {
+
+        CardEntity card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Card not found"));
+
+        UserEntity user = card.getUser();
+
+        // ⭐ 카드 삭제 시 card_count -1
+        if (user != null && user.getCardCount() != null && user.getCardCount() > 0) {
+            user.setCardCount(user.getCardCount() - 1);
+            userRepository.save(user);
+        }
+
         cardRepository.deleteById(cardId);
     }
 }
