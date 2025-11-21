@@ -3,11 +3,13 @@ package com.example.coordin8.controller;
 import com.example.coordin8.dto.focussessionDto.*;
 import com.example.coordin8.service.focussissionService.FocusSessionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "focussession", description = "누적시간 API")
 @RestController
 @RequestMapping("/api/session")
 @RequiredArgsConstructor
