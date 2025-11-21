@@ -1,0 +1,88 @@
+server:
+  # 애플리케이션 실행 포트
+  port: 8080
+  # 오류 발생 시 응답에 메시지 포함 (개발 환경에 유용)
+  error:
+    include-message: always
+
+spring:
+  application:
+    # 애플리케이션 이름 설정
+    name: coordin8
+
+  datasource:
+    # MariaDB JDBC 드라이버 설정
+    driver-class-name: org.mariadb.jdbc.Driver
+    # MariaDB 연결 URL
+    url: jdbc:mariadb://localhost:3306/coordin8?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 7160
+    hikari:
+      # Hikari CP를 사용하여 MariaDB의 문자 인코딩을 명시적으로 설정
+      connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+
+  http:
+    # HTTP 요청 및 응답 인코딩을 UTF-8로 강제 설정 (한글 깨짐 방지)
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+      force-request: true
+      force-response: true
+
+  jpa:
+    hibernate:
+      # DDL 자동 생성 설정 (개발 단계: update 사용)
+      ddl-auto: update
+    properties:
+      hibernate:
+        # MariaDB dialect 사용 명시
+        dialect: org.hibernate.dialect.MariaDBDialect
+        # SQL 출력 포맷 설정
+        format_sql: true
+        connection:
+          characterEncoding: UTF-8
+          useUnicode: true
+        jdbc:
+          time_zone: Asia/Seoul # JDBC 타임존 설정
+        default_schema: coordin8 # 기본 스키마 이름 설정
+    # 실행되는 SQL을 콘솔에 표시
+    show-sql: true
+    # 데이터베이스 플랫폼 다시 한 번 명시
+    database-platform: org.hibernate.dialect.MariaDBDialect
+
+  sql:
+    # SQL 초기화 관련 설정
+    init:
+      mode: embedded
+      continue-on-error: true
+      encoding: UTF-8
+
+# SpringDoc/Swagger UI 설정 (API 문서화)
+springdoc:
+  swagger-ui:
+    # Swagger UI 접근 경로 설정
+    path: /swagger-ui.html
+    groups-order: desc
+    tags-sorter: alpha
+    operations-sorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true # 요청 처리 시간 표시
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  # /api/ 경로로 시작하는 컨트롤러만 문서화 대상에 포함
+  paths-to-match:
+    - /api/**
+
+# 상세 로깅 설정
+logging:
+  level:
+    # Spring Web 요청/응답 로깅
+    org.springframework.web: DEBUG
+    # 실행되는 SQL 쿼리 로깅
+    org.hibernate.SQL: DEBUG
+    # SQL 쿼리에 바인딩되는 실제 파라미터 값 로깅 (TRACE 수준으로 설정)
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
