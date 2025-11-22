@@ -17,6 +17,7 @@ public class CardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long cardId;
 
     @Column(name = "title",
